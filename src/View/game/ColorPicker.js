@@ -1,15 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import "./ColorPicker.css";
 
 const ColorPicker = () => {
   const colors = ["red", "blue", "green", "yellow"];
   const [selectedColors, setSelectedColors] = useState([]);
+  const [codeSaved, setCodeSaved] = useState(false);
+  const localStorageKey = "selectedColors";
+
+  useEffect(() => {
+    const storedColors = JSON.parse(localStorage.getItem(localStorageKey));
+    if (storedColors) {
+      setSelectedColors(storedColors);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(localStorageKey, JSON.stringify(selectedColors));
+  }, [selectedColors]);
 
   const handleColorSelection = (color) => {
-    if (selectedColors.length < 4) {
+    if (selectedColors.length < 4 && !codeSaved) {
       setSelectedColors([...selectedColors, color]);
     }
   };
+
+  const handleReset = () => {
+    setSelectedColors([]);
+    localStorage.removeItem(localStorageKey);
+    setCodeSaved(false);
+  };
+
+  const handleSaveCode = () => {
+    if (selectedColors.length === 4) {
+      setCodeSaved(true);
+      console.log(`Pseudo: ${pseudo} | Code couleur: ${selectedColors.join(", ")}`);
+    }
+  };
+
+  const { pseudo } = useParams();
 
   return (
     <div className="color-picker">
@@ -39,7 +68,14 @@ const ColorPicker = () => {
           <p>Aucune couleur sélectionnée.</p>
         )}
       </div>
-      <button className="App-button">Valider</button>
+      <div className="color-picker__buttons">
+        <button className="App-button" onClick={handleReset}>
+          Réinitialiser
+        </button>
+        <button className="App-button" onClick={handleSaveCode} disabled={codeSaved}>
+          Valider
+        </button>
+      </div>
     </div>
   );
 };
