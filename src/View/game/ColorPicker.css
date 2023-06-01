@@ -1,0 +1,75 @@
+body{
+  background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(15px + 2vmin);
+    color: white;
+}
+
+.color-picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .color-picker__rectangle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .color-picker__button {
+    width: 60px;
+    height: 60px;
+    border: none;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    outline: none;
+  }
+  
+  .color-picker__button.selected {
+    border: 2px solid white;
+  }
+  
+  .color-picker__selected-colors {
+    text-align: center;
+  }
+  
+  .color-picker__selected-colors h2 {
+    margin-bottom: 10px;
+  }
+  
+  .color-picker__selected-colors ul {
+    list-style-type: none;
+    padding: 3;
+  }
+  
+  .color-picker__selected-colors li {
+    display: inline-block;
+    width:90px;
+    height: 90px;
+    margin: 45px;
+    border-radius: 100%;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .App-button{
+    background-color: #282c34;
+    color: white;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  
