@@ -19,11 +19,10 @@ const mqttSub = () => {
   client.subscribe("message", function (err) {
     if (!err) {
       client.publish("message", "Hello back");
-      const onMessage = (callBack) => {
-        client.on("message", (topic, message, packet) => {
-          callBack(JSON.parse(new TextDecoder("utf-8").decode(message)));
-        });
-      };
+      client.on("message", function (topic, message) {
+        // message is Buffer
+        console.log(message.toString());
+      });
     } else {
       console.log(err);
     }
