@@ -1,18 +1,26 @@
 import React from "react";
 import "./Home.css";
+import { useNavigate } from 'react-router-dom';
 
 import { useNavigate } from "react-router-dom";
 
 function Home() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate('/reglage');
+    }
 
-  const handleClick = () => {
-    const player = {
-      pseudo: document.querySelector("input").value,
-      score: 0,
-    };
-    localStorage.setItem("player", JSON.stringify(player));
-    navigate("/game");
+
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1>Mastermind-IOT</h1>
+          <h2>Retrouverez les code couleur et c'est gagné</h2>
+          <h3>Vous avez 10 essais</h3>
+          <button className="App-button" onClick={handleClick} >Jouer</button>
+        </header>
+      </div>
+    );
   };
 
   const leaderboard = JSON.parse(localStorage.getItem("leaderboard"));

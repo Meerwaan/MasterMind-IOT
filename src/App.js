@@ -1,5 +1,9 @@
-import logo from "./logo.svg";
-import "./App.css";
+
+import { BrowserRouter , Routes , Route } from 'react-router-dom';
+import Home from './View/home/Home';
+import Reglage from './View/setting/Reglage';
+
+import ColorPicker from './View/game/ColorPicker';
 
 import { useNavigate, Routes, Route } from "react-router-dom";
 
@@ -11,8 +15,9 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/game" element={<Game />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/reglage" element={<Reglage />} />
+        <Route path="/game" element={<ColorPicker />} />
       </Routes>
     </div>
   );
