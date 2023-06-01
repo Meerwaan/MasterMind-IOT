@@ -20,5 +20,27 @@
     color: white;
   }
   
+
+  .leaderboard {
+   
+    padding: 10px;
+    width: 200px;
+  }
+  
+  .leaderboard__player {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .leaderboard__player__name {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .leaderboard__player__score {
+    color: #888;
+  }
+  
   
   
