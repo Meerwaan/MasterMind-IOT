@@ -1,8 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ColorPicker.css";
+import mqtt from "precompiled-mqtt";
 
 const ColorPicker = () => {
+  const [client, setClient] = useState(null);
+  useEffect(() => {
+    mqttSub();
+  }, []);
+  const mqttConnect = () => {
+    const client = mqtt.connect("mqtt://test.mosquitto.org:8080");
+    console.log(client);
+    setClient(client);
+    return client;
+  };
+
+  const mqttSub = () => {
+    const client = mqttConnect();
+    client.subscribe("message", function (err) {
+      if (!err) {
+        client.publish("message", "Hello back");
+        client.on("message", function (topic, message) {
+          // message is Buffer
+          console.log(message.toString());
+        });
+      } else {
+        console.log(err);
+      }
+    });
+  };
+
   const colors = ["red", "blue", "green", "yellow"];
   const [selectedColors, setSelectedColors] = useState([]);
   const [codeSaved, setCodeSaved] = useState(false);
@@ -37,8 +64,8 @@ const ColorPicker = () => {
   const handleSaveCode = () => {
     if (selectedColors.length === 4) {
       setCodeSaved(true);
-      console.log(`Pseudo: ${pseudo} | Code couleur: ${selectedColors.join(", ")}`);
     }
+    client.publish("message", JSON.stringify(selectedColors));
   };
 
   return (
@@ -73,7 +100,11 @@ const ColorPicker = () => {
         <button className="App-button" onClick={handleReset}>
           Réinitialiser
         </button>
-        <button className="App-button" onClick={handleSaveCode} disabled={codeSaved}>
+        <button
+          className="App-button"
+          onClick={handleSaveCode}
+          disabled={codeSaved}
+        >
           Valider
         </button>
       </div>

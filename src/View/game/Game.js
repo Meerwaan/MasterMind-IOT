@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import "./Game.css";
 
@@ -56,7 +56,7 @@ function Game() {
         Jaune
       </button>
 
-      <button onClick={console.log(code)}>Valider</button>
+      <button onClick={console.log("coucou")}>Valider</button>
       <button onClick={() => setCode([])}>Effacer</button>
     </div>
   );
