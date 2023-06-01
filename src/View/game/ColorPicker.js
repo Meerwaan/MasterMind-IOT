@@ -39,9 +39,7 @@ const ColorPicker = () => {
           <p>Aucune couleur sélectionnée.</p>
         )}
       </div>
-      <button className="App-button">
-        Valider
-      </button>
+      <button className="App-button">Valider</button>
     </div>
   );
 };
