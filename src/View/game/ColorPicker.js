@@ -6,18 +6,21 @@ const ColorPicker = () => {
   const colors = ["red", "blue", "green", "yellow"];
   const [selectedColors, setSelectedColors] = useState([]);
   const [codeSaved, setCodeSaved] = useState(false);
-  const localStorageKey = "selectedColors";
+  const localStorageKeyPrefix = "selectedColors_";
+
+  const { pseudo } = useParams();
+  const localStorageKey = localStorageKeyPrefix + pseudo;
 
   useEffect(() => {
     const storedColors = JSON.parse(localStorage.getItem(localStorageKey));
     if (storedColors) {
       setSelectedColors(storedColors);
     }
-  }, []);
+  }, [localStorageKey]);
 
   useEffect(() => {
     localStorage.setItem(localStorageKey, JSON.stringify(selectedColors));
-  }, [selectedColors]);
+  }, [selectedColors, localStorageKey]);
 
   const handleColorSelection = (color) => {
     if (selectedColors.length < 4 && !codeSaved) {
@@ -37,8 +40,6 @@ const ColorPicker = () => {
       console.log(`Pseudo: ${pseudo} | Code couleur: ${selectedColors.join(", ")}`);
     }
   };
-
-  const { pseudo } = useParams();
 
   return (
     <div className="color-picker">
