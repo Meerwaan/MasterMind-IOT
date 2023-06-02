@@ -31,6 +31,47 @@ body {
   border-radius: 50%;
   outline: none;
 }
+.color-picker__button0 {
+  background-color: green;
+  width: 60px;
+  height: 60px;
+  border: none;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+  outline: none;
+}
+
+.color-picker__button1{
+  background-color: red;
+  width: 60px;
+  height: 60px;
+  border: none;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+  outline: none;
+}
+.color-picker__button2 {
+  background-color: blue;
+  width: 60px;
+  height: 60px;
+  border: none;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+  outline: none;
+}
+.color-picker__button3 {
+  background-color: yellow;
+  width: 60px;
+  height: 60px;
+  border: none;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 50%;
+  outline: none;
+}
 
 .color-picker__button.selected {
   border: 2px solid white;
@@ -70,4 +111,24 @@ body {
   margin: 10px;
   font-size: 20px;
   cursor: pointer;
+}
+
+.blue {
+  background-color: blue;
+  color: white;
+}
+
+.red {
+  background-color: red;
+  color: white;
+}
+
+.green {
+  background-color: green;
+  color: white;
+}
+
+.yellow {
+  background-color: yellow;
+  color: black;
 }

@@ -129,10 +129,9 @@ const ColorPicker = () => {
           {colors.map((color) => (
             <button
               key={color}
-              className={`color-picker__button ${
+              className={`color-picker__button${color} ${
                 selectedColors.includes(color) ? "selected" : ""
               }`}
-              style={{ backgroundColor: color }}
               onClick={() => handleColorSelection(color)}
             />
           ))}
@@ -143,9 +142,7 @@ const ColorPicker = () => {
           {selectedColors.length > 0 ? (
             <ul>
               {selectedColors.map((color, index) => (
-                <li key={index} style={{ backgroundColor: color }}>
-                  {color}
-                </li>
+                <li key={index} className={`color-picker__button${color}`}></li>
               ))}
             </ul>
           ) : (
