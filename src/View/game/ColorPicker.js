@@ -111,7 +111,9 @@ const ColorPicker = () => {
   const handleSaveCode = () => {
     if (selectedColors.length === 4) {
       setCodeSaved(true);
+      setSelectedColors([]);
     }
+
     client.publish(
       "message",
       JSON.stringify({
@@ -164,11 +166,15 @@ const ColorPicker = () => {
       </div>
       <div className="App">
         <h1>Historique</h1>
-        {historique.map((tableauInterne, index) => (
-          <ul key={index}>
-            <li>{tableauInterne.join(", ")}</li>
-          </ul>
-        ))}
+        <div className="ligne-ul">
+          {historique.map((tableauInterne, index) => (
+            <ul key={index} className="ligne-tableau">
+              {tableauInterne.map((valeur, i) => (
+                <li key={i} className={`color-picker__button${valeur}`}></li>
+              ))}
+            </ul>
+          ))}
+        </div>
       </div>
     </>
   );
