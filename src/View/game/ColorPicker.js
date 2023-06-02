@@ -7,7 +7,7 @@ const ColorPicker = () => {
   const navigate = useNavigate();
   const [client, setClient] = useState(null);
   const [trials, setTrials] = useState(10);
-  const [historique, setHistorique] =useState([]);
+  const [historique, setHistorique] = useState([]);
 
   useEffect(() => {
     mqttSub();
@@ -33,19 +33,33 @@ const ColorPicker = () => {
           if (result["result"] === false) {
             console.log("Vous avez perdu");
             console.log(result["tab"]);
-            
-            
+
             setTrials(trials - 1);
             setHistorique([...historique, result["tab"]]);
-          
+
             if (trials === 0) {
+              client.publish(
+                "message",
+                JSON.stringify({
+                  tab: result["tab"],
+                  result: true,
+                })
+              );
               console.log("c'est fini, vous avez perdu");
               alert("c'est fini, vous avez perdu");
-            
+
               finish();
             }
           } else {
             if (result["result"] === true) {
+              client.publish(
+                "message",
+                JSON.stringify({
+                  tab: result["tab"],
+                  result: true,
+                })
+              );
+
               console.log("Vous avez gagné");
               alert("Vous avez gagné");
               finish();
@@ -98,7 +112,13 @@ const ColorPicker = () => {
     if (selectedColors.length === 4) {
       setCodeSaved(true);
     }
-    client.publish("message", JSON.stringify(selectedColors));
+    client.publish(
+      "message",
+      JSON.stringify({
+        tab: selectedColors,
+        result: false,
+      })
+    );
   };
 
   return (
@@ -147,14 +167,12 @@ const ColorPicker = () => {
       </div>
       <div className="App">
         <h1>Historique</h1>
-      {historique.map((tableauInterne, index) => (
-        <ul key={index}>
-          {tableauInterne.map((element, innerIndex) => (
-            <li key={innerIndex}>{element}</li>
-          ))}
-        </ul>
-      ))}
-    </div>
+        {historique.map((tableauInterne, index) => (
+          <ul key={index}>
+            <li>{tableauInterne.join(", ")}</li>
+          </ul>
+        ))}
+      </div>
     </>
   );
 };
