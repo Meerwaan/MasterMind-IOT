@@ -19,7 +19,6 @@ const ColorPicker = () => {
     const client = mqttConnect();
     client.subscribe("message", function (err) {
       if (!err) {
-        client.publish("message", "Hello back");
         client.on("message", function (topic, message) {
           // message is Buffer
           console.log(message.toString());
@@ -30,7 +29,7 @@ const ColorPicker = () => {
     });
   };
 
-  const colors = ["red", "blue", "green", "yellow"];
+  const colors = [1, 2, 0, 3];
   const [selectedColors, setSelectedColors] = useState([]);
   const [codeSaved, setCodeSaved] = useState(false);
   const localStorageKeyPrefix = "selectedColors_";
