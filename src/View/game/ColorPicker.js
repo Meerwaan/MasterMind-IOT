@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { json, useParams } from "react-router-dom";
+import { json, useNavigate, useParams } from "react-router-dom";
 import "./ColorPicker.css";
 import mqtt from "precompiled-mqtt";
 
 const ColorPicker = () => {
+  const navigate = useNavigate();
   const [client, setClient] = useState(null);
+  const [trials, setTrials] = useState(10);
   useEffect(() => {
     mqttSub();
   }, []);
@@ -17,17 +19,40 @@ const ColorPicker = () => {
 
   const mqttSub = () => {
     const client = mqttConnect();
-    client.subscribe("message", function (err) {
-      if (!err) {
-      } else {
-        console.log(err);
+
+    client.subscribe("message", function (err) {});
+    client.subscribe("result", function (err) {});
+    client.on("message", function (topic, message) {
+      switch (topic) {
+        case "result":
+          console.log(message.toString());
+
+          var result = JSON.parse(message);
+          if (result["result"] === false) {
+            console.log("Vous avez perdu");
+            setTrials(trials - 1);
+            if (trials === 0) {
+              console.log("c'est fini, vous avez perdu");
+              alert("c'est fini, vous avez perdu");
+              finish();
+            }
+          } else {
+            if (result["result"] === true) {
+              console.log("Vous avez gagné");
+              alert("Vous avez gagné");
+              finish();
+            }
+          }
+          break;
+        default:
+          console.log("No topic");
+          break;
       }
     });
-    client.on("result", function (topic, message) {
-      var testjson = JSON.parse(message.toString());
-      console.log(testjson);
-     
-    });
+  };
+
+  const finish = () => {
+    navigate("/");
   };
 
   const colors = [1, 2, 0, 3];
@@ -66,12 +91,7 @@ const ColorPicker = () => {
       setCodeSaved(true);
     }
     client.publish("message", JSON.stringify(selectedColors));
-    
   };
-
-  
-
-  
 
   return (
     <>
@@ -90,6 +110,7 @@ const ColorPicker = () => {
           ))}
         </div>
         <div className="color-picker__selected-colors">
+          <p>Nombre d'essais restants : {trials}</p>
           <h2>Couleurs sélectionnées :</h2>
           {selectedColors.length > 0 ? (
             <ul>

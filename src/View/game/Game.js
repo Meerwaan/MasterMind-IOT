@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import "./Game.css";
 
 function Game() {
+  const [trials, setTrials] = useState(10);
   const [code, setCode] = useState([]);
   const [playerName, setPlayerName] = useState("");
 
