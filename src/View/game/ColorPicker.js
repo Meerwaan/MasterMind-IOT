@@ -7,6 +7,8 @@ const ColorPicker = () => {
   const navigate = useNavigate();
   const [client, setClient] = useState(null);
   const [trials, setTrials] = useState(10);
+  const [historique, setHistorique] =useState([]);
+
   useEffect(() => {
     mqttSub();
   }, []);
@@ -30,10 +32,16 @@ const ColorPicker = () => {
           var result = JSON.parse(message);
           if (result["result"] === false) {
             console.log("Vous avez perdu");
+            console.log(result["tab"]);
+            
+            
             setTrials(trials - 1);
+            setHistorique([...historique, result["tab"]]);
+          
             if (trials === 0) {
               console.log("c'est fini, vous avez perdu");
               alert("c'est fini, vous avez perdu");
+            
               finish();
             }
           } else {
@@ -138,10 +146,15 @@ const ColorPicker = () => {
         </div>
       </div>
       <div className="App">
-        <h1>Combinaison reçu</h1>
-
-        <p></p>
-      </div>
+        <h1>Historique</h1>
+      {historique.map((tableauInterne, index) => (
+        <ul key={index}>
+          {tableauInterne.map((element, innerIndex) => (
+            <li key={innerIndex}>{element}</li>
+          ))}
+        </ul>
+      ))}
+    </div>
     </>
   );
 };
