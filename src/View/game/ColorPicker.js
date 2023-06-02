@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
 import "./ColorPicker.css";
 import mqtt from "precompiled-mqtt";
 
@@ -19,13 +19,14 @@ const ColorPicker = () => {
     const client = mqttConnect();
     client.subscribe("message", function (err) {
       if (!err) {
-        client.on("message", function (topic, message) {
-          // message is Buffer
-          console.log(message.toString());
-        });
       } else {
         console.log(err);
       }
+    });
+    client.on("result", function (topic, message) {
+      var testjson = JSON.parse(message.toString());
+      console.log(testjson);
+     
     });
   };
 
@@ -65,49 +66,62 @@ const ColorPicker = () => {
       setCodeSaved(true);
     }
     client.publish("message", JSON.stringify(selectedColors));
+    
   };
 
+  
+
+  
+
   return (
-    <div className="color-picker">
-      <div className="color-picker__rectangle">
-        {colors.map((color) => (
+    <>
+      {" "}
+      <div className="color-picker">
+        <div className="color-picker__rectangle">
+          {colors.map((color) => (
+            <button
+              key={color}
+              className={`color-picker__button ${
+                selectedColors.includes(color) ? "selected" : ""
+              }`}
+              style={{ backgroundColor: color }}
+              onClick={() => handleColorSelection(color)}
+            />
+          ))}
+        </div>
+        <div className="color-picker__selected-colors">
+          <h2>Couleurs sélectionnées :</h2>
+          {selectedColors.length > 0 ? (
+            <ul>
+              {selectedColors.map((color, index) => (
+                <li key={index} style={{ backgroundColor: color }}>
+                  {color}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Aucune couleur sélectionnée.</p>
+          )}
+        </div>
+        <div className="color-picker__buttons">
+          <button className="App-button" onClick={handleReset}>
+            Réinitialiser
+          </button>
           <button
-            key={color}
-            className={`color-picker__button ${
-              selectedColors.includes(color) ? "selected" : ""
-            }`}
-            style={{ backgroundColor: color }}
-            onClick={() => handleColorSelection(color)}
-          />
-        ))}
+            className="App-button"
+            onClick={handleSaveCode}
+            disabled={codeSaved}
+          >
+            Valider
+          </button>
+        </div>
       </div>
-      <div className="color-picker__selected-colors">
-        <h2>Couleurs sélectionnées :</h2>
-        {selectedColors.length > 0 ? (
-          <ul>
-            {selectedColors.map((color, index) => (
-              <li key={index} style={{ backgroundColor: color }}>
-                {color}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Aucune couleur sélectionnée.</p>
-        )}
+      <div className="App">
+        <h1>Combinaison reçu</h1>
+
+        <p></p>
       </div>
-      <div className="color-picker__buttons">
-        <button className="App-button" onClick={handleReset}>
-          Réinitialiser
-        </button>
-        <button
-          className="App-button"
-          onClick={handleSaveCode}
-          disabled={codeSaved}
-        >
-          Valider
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 
