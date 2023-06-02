@@ -4,9 +4,9 @@ import "./ColorPicker.css";
 import mqtt from "precompiled-mqtt";
 
 const ColorPicker = () => {
+  const [trials, setTrials] = useState(10);
   const navigate = useNavigate();
   const [client, setClient] = useState(null);
-  const [trials, setTrials] = useState(10);
   const [historique, setHistorique] = useState([]);
 
   useEffect(() => {
@@ -35,6 +35,7 @@ const ColorPicker = () => {
             console.log(result["tab"]);
 
             setTrials(trials - 1);
+
             setHistorique([...historique, result["tab"]]);
 
             if (trials === 0) {
@@ -62,6 +63,8 @@ const ColorPicker = () => {
 
               console.log("Vous avez gagné");
               alert("Vous avez gagné");
+              addToLeaderboard(pseudo, trials);
+
               finish();
             }
           }
@@ -83,8 +86,15 @@ const ColorPicker = () => {
   const localStorageKeyPrefix = "selectedColors_";
 
   const { pseudo } = useParams();
+  const [leaderboardData, setLeaderboardData] = useState([]);
   const localStorageKey = localStorageKeyPrefix + pseudo;
 
+  const addToLeaderboard = (pseudo, trials) => {
+    const newEntry = { pseudo, trials };
+    const updatedData = [...leaderboardData, newEntry];
+    setLeaderboardData(updatedData);
+    localStorage.setItem("leaderboard", JSON.stringify(updatedData));
+  };
   useEffect(() => {
     const storedColors = JSON.parse(localStorage.getItem(localStorageKey));
     if (storedColors) {
